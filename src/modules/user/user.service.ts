@@ -12,8 +12,8 @@ export class UserService {
         private readonly userRepository: Repository<User>,
     ) { }
 
-    async createUser(email: string, password: string, name: string, lastName: string) {
-        const user = this.userRepository.create({ email, password, name, lastName });
+    async createUser(userData: Partial<User>) {
+        const user = this.userRepository.create(userData);
         return await this.userRepository.save(user);
     }
 
@@ -21,8 +21,10 @@ export class UserService {
         return await this.userRepository.find();
     }
 
-    async findOneUser(id: number) {
-        return await this.userRepository.findOne({ where: { id } });
+    async findUserByIdOrFail(id: number) {
+        const user = await this.userRepository.findOne({ where: { id } });
+        if (!user) throw new NotFoundException()
+        return user
     }
 
     async findOneByEmail(email: string) {
@@ -31,7 +33,7 @@ export class UserService {
 
     async updateUser(id: number, data: Partial<User>) {
         await this.userRepository.update(id, data);
-        return this.findOneUser(id);
+        return this.findUserByIdOrFail(id);
     }
 
     async deleteUser(id: number) {
