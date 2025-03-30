@@ -2,8 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
-import { NotFoundError } from 'rxjs';
-
+import { instanceToPlain } from 'class-transformer';
 
 @Injectable()
 export class UserService {
@@ -14,29 +13,23 @@ export class UserService {
 
     async createUser(userData: Partial<User>) {
         const user = this.userRepository.create(userData);
-        return await this.userRepository.save(user);
+        const savedUser = await this.userRepository.save(user);
+        return instanceToPlain(savedUser);
     }
 
     async findAllUsers() {
-        return await this.userRepository.find();
+        const users = await this.userRepository.find();
+        return users.map(user => instanceToPlain(user));
     }
 
     async findUserByIdOrFail(id: number) {
         const user = await this.userRepository.findOne({ where: { id } });
-        if (!user) throw new NotFoundException()
-        return user
+        if (!user) throw new NotFoundException();
+        return instanceToPlain(user);
     }
 
     async findOneByEmail(email: string) {
-        return await this.userRepository.findOne({ where: { email } });
-    }
-
-    async updateUser(id: number, data: Partial<User>) {
-        await this.userRepository.update(id, data);
-        return this.findUserByIdOrFail(id);
-    }
-
-    async deleteUser(id: number) {
-        return await this.userRepository.softDelete(id);
+        const user = await this.userRepository.findOne({ where: { email } });
+        return user
     }
 }

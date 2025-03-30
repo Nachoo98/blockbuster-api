@@ -15,13 +15,13 @@ export class UserController {
 
     @Get()
     @Roles(Role.ADMIN)
-    async getUsers(): Promise<User[]> {
+    async getUsers(): Promise<Partial<User>[]> {
         return this.userService.findAllUsers();
     }
 
     @Get(':id')
     @Roles(Role.ADMIN)
-    async getUserById(@Param('id') id: number): Promise<User> {
+    async getUserById(@Param('id') id: number): Promise<Partial<User>> {
         return this.userService.findUserByIdOrFail(id);
     }
 }

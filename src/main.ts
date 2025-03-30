@@ -4,6 +4,7 @@ import { setupSecurity } from './security';
 import { setupSwagger } from './swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter, } from './common/interceptor/http.interceptor';
+import { GlobalResponseInterceptor } from './common/interceptor/filter.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,7 @@ async function bootstrap() {
     }),
   );
 
+  app.useGlobalInterceptors(new GlobalResponseInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
 
   setupSecurity(app);

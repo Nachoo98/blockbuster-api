@@ -1,27 +1,26 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
-import { Role } from '../enum/role.enum';
-import { Exclude } from 'class-transformer';
+
 
 @Entity()
-export class User {
+export class Movie {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ unique: true })
-    email: string;
-
-    @Exclude()
-    @Column()
-    password: string;
 
     @Column()
-    name: string;
+    title: string;
 
     @Column()
-    lastName: string;
+    episodeId: number;
 
-    @Column({ type: 'text', default: Role.USER })
-    role: Role;
+    @Column()
+    director: string;
+
+    @Column()
+    producer: string;
+
+    @Column()
+    releaseDate: string;
 
     @CreateDateColumn()
     createdAt: Date;
