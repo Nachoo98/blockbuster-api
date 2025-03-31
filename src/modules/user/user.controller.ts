@@ -11,17 +11,17 @@ import { Role } from './enum/role.enum';
 @UseGuards(JwtAuthGuard, RoleGuard)
 @ApiBearerAuth()
 export class UserController {
-    constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
-    @Get()
-    @Roles(Role.ADMIN)
-    async getUsers(): Promise<Partial<User>[]> {
-        return this.userService.findAllUsers();
-    }
+  @Get()
+  @Roles(Role.ADMIN)
+  async getUsers(): Promise<Partial<User>[]> {
+    return this.userService.findAllUsers();
+  }
 
-    @Get(':id')
-    @Roles(Role.ADMIN)
-    async getUserById(@Param('id') id: number): Promise<Partial<User>> {
-        return this.userService.findUserByIdOrFail(id);
-    }
+  @Get(':id')
+  @Roles(Role.ADMIN)
+  async getUserById(@Param('id') id: number): Promise<Partial<User>> {
+    return this.userService.findUserByIdOrFail(id);
+  }
 }

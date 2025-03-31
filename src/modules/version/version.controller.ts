@@ -5,9 +5,9 @@ import { VersionService } from './version.service';
 @Controller()
 @ApiTags('Version')
 export class VersionController {
-    constructor(private readonly versionService: VersionService) { }
-    @Get()
-    getVersion(): string {
-        return this.versionService.getVersion();
-    }
+  constructor(private readonly versionService: VersionService) {}
+  @Get()
+  getVersion(): string {
+    return this.versionService.getVersion();
+  }
 }
