@@ -28,7 +28,7 @@ La documentacion y los objetos de prueba se encuentran desarrollados de manera a
 
 ## Environment
 
-Crear un archivo **.env** en la ruta del proyecto usando las variables del archivo **env.example**
+Crear un archivo **.env** en la ruta raiz del proyecto usando las variables del archivo **env.example**
 
 ## Project setup
 
