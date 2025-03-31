@@ -8,7 +8,7 @@ import { MovieModule } from './movie/movie.module';
 const routes: Routes = [
   {
     path: 'auth',
-    module: AuthModule
+    module: AuthModule,
   },
   {
     path: 'movie',
@@ -25,6 +25,12 @@ const routes: Routes = [
 ];
 
 @Module({
-  imports: [RouterModule.register(routes), AuthModule, MovieModule, UserModule, VersionModule],
+  imports: [
+    RouterModule.register(routes),
+    AuthModule,
+    MovieModule,
+    UserModule,
+    VersionModule,
+  ],
 })
-export class Modules { }
+export class Modules {}

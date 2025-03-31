@@ -2,15 +2,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { environments } from 'src/config/config.module';
 
-
 @Injectable()
 export class VersionService {
-    constructor(
-        @Inject(environments.KEY)
-        private readonly configService: ConfigType<typeof environments>,
-    ) { }
+  constructor(
+    @Inject(environments.KEY)
+    private readonly configService: ConfigType<typeof environments>,
+  ) {}
 
-    getVersion(): string {
-        return this.configService.APP_VERSION!;
-    }
+  getVersion(): string {
+    return this.configService.APP_VERSION!;
+  }
 }

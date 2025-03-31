@@ -2,39 +2,34 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
-import { NotFoundError } from 'rxjs';
-
+import { instanceToPlain } from 'class-transformer';
 
 @Injectable()
 export class UserService {
-    constructor(
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>,
-    ) { }
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
-    async createUser(email: string, password: string, name: string, lastName: string) {
-        const user = this.userRepository.create({ email, password, name, lastName });
-        return await this.userRepository.save(user);
-    }
+  async createUser(userData: Partial<User>) {
+    const user = this.userRepository.create(userData);
+    const savedUser = await this.userRepository.save(user);
+    return instanceToPlain(savedUser);
+  }
 
-    async findAllUsers() {
-        return await this.userRepository.find();
-    }
+  async findAllUsers() {
+    const users = await this.userRepository.find();
+    return users.map((user) => instanceToPlain(user));
+  }
 
-    async findOneUser(id: number) {
-        return await this.userRepository.findOne({ where: { id } });
-    }
+  async findUserByIdOrFail(id: number) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) throw new NotFoundException();
+    return instanceToPlain(user);
+  }
 
-    async findOneByEmail(email: string) {
-        return await this.userRepository.findOne({ where: { email } });
-    }
-
-    async updateUser(id: number, data: Partial<User>) {
-        await this.userRepository.update(id, data);
-        return this.findOneUser(id);
-    }
-
-    async deleteUser(id: number) {
-        return await this.userRepository.softDelete(id);
-    }
+  async findOneByEmail(email: string) {
+    const user = await this.userRepository.findOne({ where: { email } });
+    return user;
+  }
 }
